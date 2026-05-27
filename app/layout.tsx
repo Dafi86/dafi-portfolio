@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dafi-portfolio.vercel.app"),
+  metadataBase: new URL("https://your-portfolio.vercel.app"),
 
   title: {
     default: "Ahmad Dafi Zidni Alfarisi",
