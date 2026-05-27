@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Reveal from "@/components/ui/Reveal";
-import { useEffect, useState } from "react";
 
 const skills = [
   {
@@ -44,13 +43,8 @@ const interests = [
 ];
 
 export default function About() {
-  const [profileImage, setProfileImage] = useState("");
-
-  useEffect(() => {
-    setProfileImage(
-      "https://res.cloudinary.com/dye7vauxw/image/upload/v1779786658/liq7ljyf83zczke6nmsf.png",
-    );
-  }, []);
+  const profileImage =
+    "https://res.cloudinary.com/dye7vauxw/image/upload/v1779786658/liq7ljyf83zczke6nmsf.png";
 
   return (
     <Reveal>
