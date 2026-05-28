@@ -9,30 +9,24 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 import MobileDock from "@/components/layout/MobileDock";
 
-/* =========================
-    BASE URL
-========================= */
-const baseUrl =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : process.env.NEXT_PUBLIC_BASE_URL;
+import { connectDB } from "@/lib/mongodb";
+
+import Project from "@/models/Project";
+
+import Certificate from "@/models/Certificate";
 
 /* =========================
-    GET PROJECTS
+    GET DATA DIRECT DB
 ========================= */
 async function getProjects() {
   try {
-    const res = await fetch(`${baseUrl}/api/projects`, {
-      cache: "no-store",
+    await connectDB();
+
+    const projects = await Project.find().sort({
+      createdAt: -1,
     });
 
-    if (!res.ok) {
-      console.log("FAILED PROJECT FETCH");
-
-      return [];
-    }
-
-    return res.json();
+    return JSON.parse(JSON.stringify(projects));
   } catch (error) {
     console.log("PROJECT ERROR:", error);
 
@@ -40,22 +34,15 @@ async function getProjects() {
   }
 }
 
-/* =========================
-    GET CERTIFICATES
-========================= */
 async function getCertificates() {
   try {
-    const res = await fetch(`${baseUrl}/api/certificates`, {
-      cache: "no-store",
+    await connectDB();
+
+    const certificates = await Certificate.find().sort({
+      createdAt: -1,
     });
 
-    if (!res.ok) {
-      console.log("FAILED CERTIFICATE FETCH");
-
-      return [];
-    }
-
-    return res.json();
+    return JSON.parse(JSON.stringify(certificates));
   } catch (error) {
     console.log("CERTIFICATE ERROR:", error);
 
