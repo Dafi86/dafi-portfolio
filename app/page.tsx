@@ -16,9 +16,12 @@ import MobileDock from "@/components/layout/MobileDock";
 
 async function getProjects() {
   try {
-    const res = await fetch("http://localhost:3000/api/projects", {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`,
+      {
+        cache: "no-store",
+      },
+    );
 
     return res.json();
   } catch {
@@ -28,9 +31,12 @@ async function getProjects() {
 
 async function getCertificates() {
   try {
-    const res = await fetch("http://localhost:3000/api/certificates", {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/certificates`,
+      {
+        cache: "no-store",
+      },
+    );
 
     return res.json();
   } catch {

@@ -1,21 +1,34 @@
-import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI!;
 
-if (!MONGODB_URI) {
-  console.warn("MONGODB_URI belum diatur");
+const options = {};
+
+let client;
+let clientPromise: Promise<MongoClient>;
+
+if (!process.env.MONGODB_URI) {
+  throw new Error("Please add your Mongo URI");
+}
+
+if (process.env.NODE_ENV === "development") {
+  let globalWithMongo = global as typeof globalThis & {
+    _mongoClientPromise?: Promise<MongoClient>;
+  };
+
+  if (!globalWithMongo._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    globalWithMongo._mongoClientPromise = client.connect();
+  }
+
+  clientPromise = globalWithMongo._mongoClientPromise;
+} else {
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
 }
 
 export async function connectDB() {
-  if (mongoose.connections[0].readyState) {
-    return;
-  }
+  const client = await clientPromise;
 
-  try {
-    await mongoose.connect(MONGODB_URI as string);
-
-    console.log("MongoDB Connected");
-  } catch (error) {
-    console.error("MongoDB Error:", error);
-  }
+  return client.db("portfolio");
 }
