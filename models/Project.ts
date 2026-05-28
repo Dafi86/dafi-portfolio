@@ -1,23 +1,42 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, models, model } from "mongoose";
 
 const ProjectSchema = new Schema(
   {
-    title: String,
+    title: {
+      type: String,
+      required: true,
+    },
 
-    description: String,
+    description: {
+      type: String,
+      required: true,
+    },
 
-    image: String,
+    image: {
+      type: String,
+      default: "",
+    },
 
-    github: String,
+    github: {
+      type: String,
+      default: "",
+    },
 
-    liveUrl: String,
+    liveUrl: {
+      type: String,
+      default: "",
+    },
 
-    technologies: [String],
+    technologies: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true,
   },
 );
 
-export default mongoose.models.Project ||
-  mongoose.model("Project", ProjectSchema);
+const Project = models.Project || model("Project", ProjectSchema);
+
+export default Project;

@@ -1,19 +1,33 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, models, model } from "mongoose";
 
 const CertificateSchema = new Schema(
   {
-    title: String,
+    title: {
+      type: String,
+      required: true,
+    },
 
-    issuer: String,
+    issuer: {
+      type: String,
+      required: true,
+    },
 
-    year: String,
+    year: {
+      type: String,
+      required: true,
+    },
 
-    image: String,
+    image: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
   },
 );
 
-export default mongoose.models.Certificate ||
-  mongoose.model("Certificate", CertificateSchema);
+const Certificate =
+  models.Certificate || model("Certificate", CertificateSchema);
+
+export default Certificate;
