@@ -1,30 +1,21 @@
-export const dynamic = "force-dynamic";
-
 import Navbar from "@/components/layout/Navbar";
-
 import Hero from "@/components/sections/Hero";
-
 import About from "@/components/sections/About";
-
 import PortfolioTabs from "@/components/sections/PortfolioTabs";
-
 import Experience from "@/components/sections/Experience";
-
 import Contact from "@/components/sections/Contact";
-
 import Footer from "@/components/layout/Footer";
-
 import MobileDock from "@/components/layout/MobileDock";
 
-/* =========================
-    GET PROJECTS
-========================= */
+/* IMPORTANT */
+export const dynamic = "force-dynamic";
+
 async function getProjects() {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`,
       {
-        next: { revalidate: 0 },
+        cache: "no-store",
       },
     );
 
@@ -34,21 +25,18 @@ async function getProjects() {
 
     return res.json();
   } catch (error) {
-    console.log(error);
+    console.log("PROJECT ERROR:", error);
 
     return [];
   }
 }
 
-/* =========================
-    GET CERTIFICATES
-========================= */
 async function getCertificates() {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/certificates`,
       {
-        next: { revalidate: 0 },
+        cache: "no-store",
       },
     );
 
@@ -58,15 +46,12 @@ async function getCertificates() {
 
     return res.json();
   } catch (error) {
-    console.log(error);
+    console.log("CERTIFICATE ERROR:", error);
 
     return [];
   }
 }
 
-/* =========================
-    HOME PAGE
-========================= */
 export default async function Home() {
   const projects = await getProjects();
 
@@ -80,9 +65,6 @@ export default async function Home() {
       <div className="absolute right-[-200px] top-[300px] h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-3xl" />
 
       <div className="absolute bottom-[-200px] left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-blue-500/20 blur-3xl" />
-
-      {/* NOISE */}
-      <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
       {/* CONTENT */}
       <div className="relative z-10">
