@@ -36,11 +36,13 @@ const tabs = [
     label: "Projects",
     icon: <FaCode />,
   },
+
   {
     id: "certificates",
     label: "Certificates",
     icon: <FaCertificate />,
   },
+
   {
     id: "tech",
     label: "Tech Stack",
@@ -63,14 +65,19 @@ const techs = [
   { name: "Networking", icon: <MdRouter /> },
 ];
 
-export default function PortfolioTabs({ projects, certificates }: any) {
+export default function PortfolioTabs({
+  projects = [],
+  certificates = [],
+}: any) {
   const [activeTab, setActiveTab] = useState("projects");
 
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
   const [selectedCertificate, setSelectedCertificate] = useState<any>(null);
 
-  /* LOCK SCROLL */
+  /* =========================
+      LOCK BODY SCROLL
+  ========================= */
   useEffect(() => {
     if (selectedProject || selectedCertificate) {
       document.body.style.overflow = "hidden";
@@ -83,16 +90,31 @@ export default function PortfolioTabs({ projects, certificates }: any) {
     };
   }, [selectedProject, selectedCertificate]);
 
+  /* =========================
+      FILTER EMPTY DATA
+  ========================= */
+  const validProjects = projects.filter(
+    (item: any) =>
+      item?.title?.trim() && item?.description?.trim() && item?.image?.trim(),
+  );
+
+  const validCertificates = certificates.filter(
+    (item: any) => item?.title?.trim() && item?.image?.trim(),
+  );
+
   return (
     <section
       id="portfolio"
       className="relative overflow-hidden bg-[#020617] px-4 py-20 md:px-6"
     >
-      {/* BG */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,255,255,0.08),transparent_35%)]" />
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.12),transparent_35%)]" />
 
+      <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+
+      {/* CONTENT */}
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* HEADER */}
         <div className="mb-12 text-center md:mb-16">
@@ -145,32 +167,57 @@ export default function PortfolioTabs({ projects, certificates }: any) {
 
         {/* CONTENT */}
         <AnimatePresence mode="wait">
-          {/* PROJECTS */}
+          {/* =========================
+              PROJECTS
+          ========================= */}
           {activeTab === "projects" && (
             <motion.div
               key="projects"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -20,
+              }}
+              transition={{
+                duration: 0.4,
+              }}
               className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
             >
-              {projects?.map((project: any, index: number) => (
+              {validProjects.map((project: any, index: number) => (
                 <motion.div
-                  key={index}
+                  key={project._id || index}
                   whileHover={{
-                    y: -6,
+                    y: -8,
                   }}
-                  className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] backdrop-blur-3xl"
+                  transition={{
+                    duration: 0.3,
+                  }}
+                  className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_10px_40px_rgba(0,0,0,0.4)] backdrop-blur-3xl"
                 >
-                  <div className="overflow-hidden">
+                  {/* IMAGE */}
+                  <div className="relative overflow-hidden">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="h-[220px] w-full object-cover transition duration-700 hover:scale-105"
+                      className="h-[220px] w-full object-cover transition duration-700 group-hover:scale-105"
                     />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent" />
                   </div>
 
+                  {/* CONTENT */}
                   <div className="p-5">
+                    <div className="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-cyan-300">
+                      Featured Project
+                    </div>
+
                     <h3 className="text-xl font-semibold text-white">
                       {project.title}
                     </h3>
@@ -179,6 +226,7 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                       {project.description}
                     </p>
 
+                    {/* TECHNOLOGIES */}
                     <div className="mt-5 flex flex-wrap gap-2">
                       {project.technologies?.map((tech: string, i: number) => (
                         <span
@@ -190,10 +238,11 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                       ))}
                     </div>
 
+                    {/* BUTTONS */}
                     <div className="mt-6 flex gap-3">
                       <button
                         onClick={() => setSelectedProject(project)}
-                        className="flex-1 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-3 text-sm font-medium text-black transition hover:scale-[1.02]"
+                        className="flex-1 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-3 text-sm font-semibold text-black transition duration-300 hover:scale-[1.02]"
                       >
                         Open Project
                       </button>
@@ -203,7 +252,7 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex h-[48px] w-[48px] items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white"
+                          className="flex h-[48px] w-[48px] items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white transition duration-300 hover:border-cyan-400/30 hover:bg-cyan-400/10"
                         >
                           <FaGithub />
                         </a>
@@ -215,29 +264,56 @@ export default function PortfolioTabs({ projects, certificates }: any) {
             </motion.div>
           )}
 
-          {/* CERTIFICATES */}
+          {/* =========================
+              CERTIFICATES
+          ========================= */}
           {activeTab === "certificates" && (
             <motion.div
               key="certificates"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -20,
+              }}
+              transition={{
+                duration: 0.4,
+              }}
               className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
             >
-              {certificates?.map((certificate: any, index: number) => (
+              {validCertificates.map((certificate: any, index: number) => (
                 <motion.div
-                  key={index}
-                  whileHover={{ y: -6 }}
+                  key={certificate._id || index}
+                  whileHover={{
+                    y: -8,
+                  }}
+                  transition={{
+                    duration: 0.3,
+                  }}
                   onClick={() => setSelectedCertificate(certificate)}
-                  className="cursor-pointer overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04]"
+                  className="group cursor-pointer overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_10px_40px_rgba(0,0,0,0.4)]"
                 >
-                  <img
-                    src={certificate.image}
-                    alt={certificate.title}
-                    className="h-[240px] w-full object-cover transition duration-700 hover:scale-105"
-                  />
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={certificate.image}
+                      alt={certificate.title}
+                      className="h-[240px] w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent" />
+                  </div>
 
                   <div className="p-5">
+                    <div className="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-cyan-300">
+                      Certificate
+                    </div>
+
                     <h3 className="text-lg font-semibold text-white">
                       {certificate.title}
                     </h3>
@@ -255,13 +331,27 @@ export default function PortfolioTabs({ projects, certificates }: any) {
             </motion.div>
           )}
 
-          {/* TECH */}
+          {/* =========================
+              TECH STACK
+          ========================= */}
           {activeTab === "tech" && (
             <motion.div
               key="tech"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -20,
+              }}
+              transition={{
+                duration: 0.4,
+              }}
               className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6"
             >
               {techs.map((tech, index) => (
@@ -269,10 +359,11 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                   key={index}
                   whileHover={{
                     y: -5,
+                    scale: 1.03,
                   }}
-                  className="rounded-[1.8rem] border border-white/10 bg-white/[0.03] p-6 text-center"
+                  className="group rounded-[1.8rem] border border-white/10 bg-white/[0.03] p-6 text-center backdrop-blur-3xl transition duration-300 hover:border-cyan-400/30"
                 >
-                  <div className="mb-4 flex justify-center text-4xl text-cyan-400">
+                  <div className="mb-4 flex justify-center text-4xl text-cyan-400 transition duration-300 group-hover:scale-110">
                     {tech.icon}
                   </div>
 
@@ -284,13 +375,21 @@ export default function PortfolioTabs({ projects, certificates }: any) {
         </AnimatePresence>
       </div>
 
-      {/* PROJECT MODAL */}
+      {/* =========================
+          PROJECT MODAL
+      ========================= */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
             onClick={() => setSelectedProject(null)}
             className="fixed inset-0 z-[999] flex items-center justify-center bg-black/80 p-4 backdrop-blur-xl"
           >
@@ -318,21 +417,26 @@ export default function PortfolioTabs({ projects, certificates }: any) {
               onClick={(e) => e.stopPropagation()}
               className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-white/10 bg-[#0B1120]"
             >
+              {/* CLOSE */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white transition hover:rotate-90 hover:bg-red-500"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white transition duration-300 hover:rotate-90 hover:bg-red-500"
               >
                 <FaTimes />
               </button>
 
-              <Zoom>
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="max-h-[300px] w-full object-cover md:max-h-[450px]"
-                />
-              </Zoom>
+              {/* IMAGE */}
+              <div className="overflow-hidden">
+                <Zoom>
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="max-h-[300px] w-full object-cover md:max-h-[450px]"
+                  />
+                </Zoom>
+              </div>
 
+              {/* CONTENT */}
               <div className="p-5 md:p-8">
                 <h2 className="text-2xl font-bold text-white md:text-3xl">
                   {selectedProject.title}
@@ -341,19 +445,68 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                 <p className="mt-4 text-sm leading-7 text-white/60 md:text-base">
                   {selectedProject.description}
                 </p>
+
+                {/* TECH */}
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {selectedProject.technologies?.map(
+                    (tech: string, i: number) => (
+                      <span
+                        key={i}
+                        className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-300"
+                      >
+                        {tech}
+                      </span>
+                    ),
+                  )}
+                </div>
+
+                {/* LINKS */}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {selectedProject.liveUrl && (
+                    <a
+                      href={selectedProject.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-3 text-sm font-semibold text-black transition duration-300 hover:scale-[1.02]"
+                    >
+                      Live Demo
+                      <FaExternalLinkAlt />
+                    </a>
+                  )}
+
+                  {selectedProject.github && (
+                    <a
+                      href={selectedProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm text-white transition duration-300 hover:border-cyan-400/30 hover:bg-cyan-400/10"
+                    >
+                      Github
+                      <FaGithub />
+                    </a>
+                  )}
+                </div>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* CERTIFICATE MODAL */}
+      {/* =========================
+          CERTIFICATE MODAL
+      ========================= */}
       <AnimatePresence>
         {selectedCertificate && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
             onClick={() => setSelectedCertificate(null)}
             className="fixed inset-0 z-[999] flex items-center justify-center bg-black/80 p-4 backdrop-blur-xl"
           >
@@ -381,9 +534,10 @@ export default function PortfolioTabs({ projects, certificates }: any) {
               onClick={(e) => e.stopPropagation()}
               className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-white/10 bg-[#0B1120]"
             >
+              {/* CLOSE */}
               <button
                 onClick={() => setSelectedCertificate(null)}
-                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white transition hover:rotate-90 hover:bg-red-500"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white transition duration-300 hover:rotate-90 hover:bg-red-500"
               >
                 <FaTimes />
               </button>
