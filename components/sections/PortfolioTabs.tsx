@@ -307,7 +307,6 @@ export default function PortfolioTabs({ projects, certificates }: any) {
           )}
         </AnimatePresence>
       </div>
-
       {/* PROJECT MODAL */}
       <AnimatePresence>
         {selectedProject && (
@@ -316,13 +315,13 @@ export default function PortfolioTabs({ projects, certificates }: any) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProject(null)}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 px-3 py-6 backdrop-blur-md"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
           >
             <motion.div
               initial={{
                 opacity: 0,
-                scale: 0.9,
-                y: 50,
+                scale: 0.92,
+                y: 30,
               }}
               animate={{
                 opacity: 1,
@@ -331,65 +330,95 @@ export default function PortfolioTabs({ projects, certificates }: any) {
               }}
               exit={{
                 opacity: 0,
-                scale: 0.9,
-                y: 50,
+                scale: 0.92,
+                y: 30,
               }}
               transition={{
-                duration: 0.35,
+                duration: 0.3,
               }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/10 bg-[#07111F] shadow-[0_20px_100px_rgba(0,0,0,0.7)]"
+              className="
+          relative
+          w-full
+          max-w-2xl
+          overflow-hidden
+          rounded-[24px]
+          border
+          border-white/10
+          bg-[#081120]
+          shadow-[0_20px_80px_rgba(0,0,0,0.6)]
+        "
             >
               {/* CLOSE */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white backdrop-blur-xl transition-all duration-300 hover:rotate-90 hover:bg-red-500"
+                className="
+            absolute
+            right-3
+            top-3
+            z-50
+            flex
+            h-9
+            w-9
+            items-center
+            justify-center
+            rounded-full
+            bg-black/50
+            text-sm
+            text-white
+            transition-all
+            duration-300
+            hover:rotate-90
+            hover:bg-red-500
+          "
               >
                 <FaTimes />
               </button>
 
               {/* IMAGE */}
-              <div className="relative bg-black">
+              <div className="overflow-hidden bg-black">
                 <Zoom>
                   <img
                     src={selectedProject.image}
                     alt={selectedProject.title}
                     className="
-                h-auto
-                max-h-[220px]
+                h-[180px]
                 w-full
                 object-cover
 
-                sm:max-h-[320px]
-                md:max-h-[420px]
+                sm:h-[240px]
+                md:h-[300px]
               "
                   />
                 </Zoom>
-
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07111F] via-transparent to-transparent" />
               </div>
 
               {/* CONTENT */}
-              <div className="max-h-[45vh] overflow-y-auto p-5 md:p-8">
-                <div className="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-cyan-300">
-                  Featured Project
-                </div>
-
-                <h2 className="text-2xl font-bold text-white md:text-4xl">
+              <div className="p-5 md:p-6">
+                <h2 className="text-xl font-bold text-white md:text-2xl">
                   {selectedProject.title}
                 </h2>
 
-                <p className="mt-4 text-sm leading-7 text-white/60 md:text-base md:leading-8">
+                <p className="mt-3 text-sm leading-7 text-white/60">
                   {selectedProject.description}
                 </p>
 
                 {/* TECH */}
-                <div className="mt-6 flex flex-wrap gap-2">
+                <div className="mt-5 flex flex-wrap gap-2">
                   {selectedProject.technologies?.map(
                     (tech: string, i: number) => (
                       <span
                         key={i}
-                        className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-300"
+                        className="
+                    rounded-full
+                    border
+                    border-cyan-400/20
+                    bg-cyan-400/10
+                    px-3
+                    py-1
+                    text-[11px]
+                    text-cyan-300
+                  "
                       >
                         {tech}
                       </span>
@@ -397,14 +426,29 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                   )}
                 </div>
 
-                {/* BUTTONS */}
-                <div className="mt-8 flex flex-wrap gap-3">
+                {/* BUTTON */}
+                <div className="mt-6 flex flex-wrap gap-3">
                   {selectedProject.liveUrl && (
                     <a
                       href={selectedProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-3 text-sm font-semibold text-black transition-all duration-300 hover:scale-[1.03]"
+                      className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-gradient-to-r
+                  from-cyan-500
+                  to-blue-500
+                  px-4
+                  py-2.5
+                  text-sm
+                  font-semibold
+                  text-black
+                  transition
+                  hover:scale-[1.03]
+                "
                     >
                       Live Demo
                       <FaExternalLinkAlt />
@@ -416,7 +460,22 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                       href={selectedProject.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm text-white transition-all duration-300 hover:border-cyan-400/30 hover:bg-cyan-400/10"
+                      className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  border
+                  border-white/10
+                  bg-white/[0.04]
+                  px-4
+                  py-2.5
+                  text-sm
+                  text-white
+                  transition
+                  hover:border-cyan-400/30
+                  hover:bg-cyan-400/10
+                "
                     >
                       Github
                       <FaGithub />
@@ -437,13 +496,13 @@ export default function PortfolioTabs({ projects, certificates }: any) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedCertificate(null)}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 px-3 py-6 backdrop-blur-md"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
           >
             <motion.div
               initial={{
                 opacity: 0,
-                scale: 0.9,
-                y: 50,
+                scale: 0.92,
+                y: 30,
               }}
               animate={{
                 opacity: 1,
@@ -452,54 +511,77 @@ export default function PortfolioTabs({ projects, certificates }: any) {
               }}
               exit={{
                 opacity: 0,
-                scale: 0.9,
-                y: 50,
+                scale: 0.92,
+                y: 30,
               }}
               transition={{
-                duration: 0.35,
+                duration: 0.3,
               }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/10 bg-[#07111F] shadow-[0_20px_100px_rgba(0,0,0,0.7)]"
+              className="
+          relative
+          w-full
+          max-w-2xl
+          overflow-hidden
+          rounded-[24px]
+          border
+          border-white/10
+          bg-[#081120]
+          shadow-[0_20px_80px_rgba(0,0,0,0.6)]
+        "
             >
               {/* CLOSE */}
               <button
                 onClick={() => setSelectedCertificate(null)}
-                className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white backdrop-blur-xl transition-all duration-300 hover:rotate-90 hover:bg-red-500"
+                className="
+            absolute
+            right-3
+            top-3
+            z-50
+            flex
+            h-9
+            w-9
+            items-center
+            justify-center
+            rounded-full
+            bg-black/50
+            text-sm
+            text-white
+            transition-all
+            duration-300
+            hover:rotate-90
+            hover:bg-red-500
+          "
               >
                 <FaTimes />
               </button>
 
-              <div className="p-4 md:p-6">
+              <div className="p-4 md:p-5">
                 {/* IMAGE */}
-                <div className="overflow-hidden rounded-[22px] border border-white/10 bg-black">
+                <div className="overflow-hidden rounded-[18px] bg-black">
                   <Zoom>
                     <img
                       src={selectedCertificate.image}
                       alt={selectedCertificate.title}
                       className="
-                  h-auto
-                  max-h-[260px]
+                  max-h-[220px]
                   w-full
                   object-contain
 
-                  sm:max-h-[420px]
-                  md:max-h-[650px]
+                  sm:max-h-[320px]
+                  md:max-h-[450px]
                 "
                     />
                   </Zoom>
                 </div>
 
                 {/* INFO */}
-                <div className="mt-6">
-                  <div className="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-cyan-300">
-                    Certificate
-                  </div>
-
-                  <h2 className="text-2xl font-bold text-white md:text-3xl">
+                <div className="mt-5">
+                  <h2 className="text-xl font-bold text-white md:text-2xl">
                     {selectedCertificate.title}
                   </h2>
 
-                  <p className="mt-3 text-sm text-white/60 md:text-base">
+                  <p className="mt-2 text-sm text-white/60">
                     {selectedCertificate.issuer}
                   </p>
 
