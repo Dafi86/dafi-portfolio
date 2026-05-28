@@ -1,5 +1,4 @@
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
@@ -10,6 +9,9 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 import MobileDock from "@/components/layout/MobileDock";
 
+/* =========================
+    GET PROJECTS
+========================= */
 async function getProjects() {
   try {
     const res = await fetch(
@@ -20,16 +22,15 @@ async function getProjects() {
     );
 
     if (!res.ok) {
-      console.log("FAILED FETCH PROJECTS");
-
+      console.log("FAILED PROJECT FETCH");
       return [];
     }
 
     const data = await res.json();
 
-    console.log("PROJECTS:", data);
+    console.log("PROJECT DATA:", data);
 
-    return Array.isArray(data) ? data : [];
+    return data;
   } catch (error) {
     console.log("PROJECT ERROR:", error);
 
@@ -37,6 +38,9 @@ async function getProjects() {
   }
 }
 
+/* =========================
+    GET CERTIFICATES
+========================= */
 async function getCertificates() {
   try {
     const res = await fetch(
@@ -47,16 +51,15 @@ async function getCertificates() {
     );
 
     if (!res.ok) {
-      console.log("FAILED FETCH CERTIFICATES");
-
+      console.log("FAILED CERTIFICATE FETCH");
       return [];
     }
 
     const data = await res.json();
 
-    console.log("CERTIFICATES:", data);
+    console.log("CERTIFICATE DATA:", data);
 
-    return Array.isArray(data) ? data : [];
+    return data;
   } catch (error) {
     console.log("CERTIFICATE ERROR:", error);
 
@@ -78,6 +81,9 @@ export default async function Home() {
 
       <div className="absolute bottom-[-200px] left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-blue-500/20 blur-3xl" />
 
+      {/* NOISE */}
+      <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+
       {/* CONTENT */}
       <div className="relative z-10">
         <Navbar />
@@ -87,8 +93,8 @@ export default async function Home() {
         <About />
 
         <PortfolioTabs
-          projects={Array.isArray(projects) ? projects : []}
-          certificates={Array.isArray(certificates) ? certificates : []}
+          projects={projects || []}
+          certificates={certificates || []}
         />
 
         <Experience />
