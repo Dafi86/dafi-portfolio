@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -6,9 +9,6 @@ import Experience from "@/components/sections/Experience";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 import MobileDock from "@/components/layout/MobileDock";
-
-/* IMPORTANT */
-export const dynamic = "force-dynamic";
 
 async function getProjects() {
   try {
@@ -20,10 +20,16 @@ async function getProjects() {
     );
 
     if (!res.ok) {
+      console.log("FAILED FETCH PROJECTS");
+
       return [];
     }
 
-    return res.json();
+    const data = await res.json();
+
+    console.log("PROJECTS:", data);
+
+    return Array.isArray(data) ? data : [];
   } catch (error) {
     console.log("PROJECT ERROR:", error);
 
@@ -41,10 +47,16 @@ async function getCertificates() {
     );
 
     if (!res.ok) {
+      console.log("FAILED FETCH CERTIFICATES");
+
       return [];
     }
 
-    return res.json();
+    const data = await res.json();
+
+    console.log("CERTIFICATES:", data);
+
+    return Array.isArray(data) ? data : [];
   } catch (error) {
     console.log("CERTIFICATE ERROR:", error);
 
@@ -74,7 +86,10 @@ export default async function Home() {
 
         <About />
 
-        <PortfolioTabs projects={projects} certificates={certificates} />
+        <PortfolioTabs
+          projects={Array.isArray(projects) ? projects : []}
+          certificates={Array.isArray(certificates) ? certificates : []}
+        />
 
         <Experience />
 
