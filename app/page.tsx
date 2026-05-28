@@ -10,27 +10,29 @@ import Footer from "@/components/layout/Footer";
 import MobileDock from "@/components/layout/MobileDock";
 
 /* =========================
+    BASE URL
+========================= */
+const baseUrl =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : process.env.NEXT_PUBLIC_BASE_URL;
+
+/* =========================
     GET PROJECTS
 ========================= */
 async function getProjects() {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`,
-      {
-        cache: "no-store",
-      },
-    );
+    const res = await fetch(`${baseUrl}/api/projects`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       console.log("FAILED PROJECT FETCH");
+
       return [];
     }
 
-    const data = await res.json();
-
-    console.log("PROJECT DATA:", data);
-
-    return data;
+    return res.json();
   } catch (error) {
     console.log("PROJECT ERROR:", error);
 
@@ -43,23 +45,17 @@ async function getProjects() {
 ========================= */
 async function getCertificates() {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/certificates`,
-      {
-        cache: "no-store",
-      },
-    );
+    const res = await fetch(`${baseUrl}/api/certificates`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       console.log("FAILED CERTIFICATE FETCH");
+
       return [];
     }
 
-    const data = await res.json();
-
-    console.log("CERTIFICATE DATA:", data);
-
-    return data;
+    return res.json();
   } catch (error) {
     console.log("CERTIFICATE ERROR:", error);
 
