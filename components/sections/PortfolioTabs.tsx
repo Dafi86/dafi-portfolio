@@ -463,10 +463,11 @@ export default function PortfolioTabs({ projects, certificates }: any) {
                 </div>
 
                 {/* LINKS */}
+                {/* LINKS */}
                 <div className="mt-8 flex flex-wrap gap-4">
-                  {selectedProject.demo && (
+                  {selectedProject.liveUrl && (
                     <a
-                      href={selectedProject.demo}
+                      href={selectedProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-4 font-medium text-black transition hover:scale-[1.02]"

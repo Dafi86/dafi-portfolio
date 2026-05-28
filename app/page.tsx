@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Navbar from "@/components/layout/Navbar";
 
 import Hero from "@/components/sections/Hero";
@@ -14,36 +16,57 @@ import Footer from "@/components/layout/Footer";
 
 import MobileDock from "@/components/layout/MobileDock";
 
+/* =========================
+    GET PROJECTS
+========================= */
 async function getProjects() {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`,
       {
-        cache: "no-store",
+        next: { revalidate: 0 },
       },
     );
 
+    if (!res.ok) {
+      return [];
+    }
+
     return res.json();
-  } catch {
+  } catch (error) {
+    console.log(error);
+
     return [];
   }
 }
 
+/* =========================
+    GET CERTIFICATES
+========================= */
 async function getCertificates() {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/certificates`,
       {
-        cache: "no-store",
+        next: { revalidate: 0 },
       },
     );
 
+    if (!res.ok) {
+      return [];
+    }
+
     return res.json();
-  } catch {
+  } catch (error) {
+    console.log(error);
+
     return [];
   }
 }
 
+/* =========================
+    HOME PAGE
+========================= */
 export default async function Home() {
   const projects = await getProjects();
 
